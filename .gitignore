@@ -5,3 +5,8 @@
 .vscode/settings.json
 .vscode/launch.json
 *main.o
+main.yml
+main
+!main.c
+*Info.plist
+.vscode/tasks.json
