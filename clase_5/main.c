@@ -7,25 +7,19 @@
 // realloc()
 // free()
 
+int* crearVector(int n);
+
 int main()
 {
 
   int *puntero = NULL;
-  puntero = (int *)malloc(sizeof(int));
+  puntero = crearVector(5);
 
-  if (puntero == NULL)
-  {
-    exit(-1);
-  }
-  else
-  {
-    printf("%d\n", *puntero);
-  }
+  printf("%d\n", *puntero);
 
   *puntero = 31;
 
   printf("%d\n", *puntero);
-
 
   free(puntero);
 
@@ -33,3 +27,15 @@ int main()
 
   return 0;
 }
+
+// create a funtion that takes n as the length of a vector and returns its 
+// memory address. Use malloc to allocate memory for the vector.
+int* crearVector(int n) {
+  int* vector = (int*)calloc(n, sizeof(int));
+  if (vector == NULL) {
+    printf("Failed to allocate memory.\n");
+    exit(-1);
+  }
+  return vector;
+}
+

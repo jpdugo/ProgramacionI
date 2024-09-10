@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+typedef struct
+{
+    char nombre[20];
+    char profesor[20];
+    int nota;
+}Materias;
+
+int main()
+{
+   Materias *M1, *M2;
+  int N=3, i;
+   M1= (Materias *) malloc(N*sizeof(Materias));
+   M2= (Materias *) malloc(sizeof(Materias));
+
+   if (M1==NULL || M2 == NULL)
+   {
+       printf("\nERROR");
+   }
+   else
+   {
+
+    for (i=0;i<N;i++)
+    {
+        printf("Ingrese nombre materia: ");
+        fflush(stdin);
+        gets(M1[i].nombre);
+
+        printf("\nIngrese nombre profesor: ");
+        fflush(stdin);
+        gets(M1[i].profesor);
+        printf("\nIngrese nota materia: ");
+        scanf("%d", &M1[i].nota);
+
+    }
+
+
+
+
+    printf("\nMATERIA 1 CARGADA....\n\n");
+    printf("------------------------\n");
+
+     printf("\nIngrese nombre materia 2: ");
+     fflush(stdin);
+     gets(M2->nombre);
+     printf("\nIngrese nombre profesor 2: ");
+     fflush(stdin);
+     gets(M2->profesor);
+      printf("\nIngrese nota materia 2: ");
+      scanf("%d", &M2->nota);
+   printf("\nMATERIA 2 CARGADA....\n\n");
+    printf("------------------------\n\n");
+
+   for (i=0;i<N;i++)
+   {
+       printf("\nMateria: %s - Profe: %s - NOTA: %d\n", M1[i].nombre, M1[i].profesor, M1[i].nota);
+   }
+
+
+    printf("\n\n\tMateria 2: %s - Profe: %s - NOTA: %d", M2->nombre, M2->profesor, M2->nota);
+
+
+
+   }
+
+
+       return 0;
+}
