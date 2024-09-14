@@ -60,6 +60,7 @@ void cargar_auto(Negocio *negocio);
 void visualizar_autos(Negocio *negocio);
 void cargar_cliente(Negocio *p_negocio);
 void visualizar_clientes(Negocio *negocio);
+void visualizar_reporte_esp_clientes(Negocio *negocio);
 
 /**********************************************************
  *                                                        *
@@ -109,6 +110,7 @@ int main()
       visualizar_clientes(p_negocio);
       break;
     case 5:
+      visualizar_reporte_esp_clientes(p_negocio);
       break;
     case 6:
       salir++;
@@ -207,7 +209,7 @@ void cargar_cliente(Negocio *negocio)
     system("read -p 'Presione la tecla enter para continuar...\n' var");
     return;
   }
-  
+
   negocio->clientes = (Clientes *)realloc(negocio->clientes, (negocio->cant_clientes + 1) * sizeof(Clientes));
 
   if (negocio->clientes == NULL)
@@ -261,6 +263,28 @@ void visualizar_clientes(Negocio *negocio)
     printf("- Localidad: %s\n", negocio->clientes[i].direccion.localidad);
     printf("Cantidad de Autos: %u\n", negocio->clientes[i].cantidad_autos);
     printf("Presupuesto Anual: %u\n\n", negocio->clientes[i].presupuesto_anual);
+  }
+
+  system("read -p 'Presione la tecla enter para continuar...\n' var");
+}
+
+void visualizar_reporte_esp_clientes(Negocio *negocio)
+{
+
+  for (int i = 0; i < negocio->cant_clientes; i++)
+  {
+    if (negocio->clientes[i].cantidad_autos > 2 && negocio->clientes[i].presupuesto_anual >= 2000000)
+    {
+      printf("Cliente %d:\n", i + 1);
+      printf("Apellido %s\n", negocio->clientes[i].apellido);
+      printf("Nombre: %s\n", negocio->clientes[i].nombre);
+      printf("Direccion:\n");
+      printf("- Calle: %s\n", negocio->clientes[i].direccion.calle);
+      printf("- Numero: %u\n", negocio->clientes[i].direccion.numero);
+      printf("- Localidad: %s\n", negocio->clientes[i].direccion.localidad);
+      printf("Cantidad de Autos: %u\n", negocio->clientes[i].cantidad_autos);
+      printf("Presupuesto Anual: %u\n\n", negocio->clientes[i].presupuesto_anual);
+    }
   }
 
   system("read -p 'Presione la tecla enter para continuar...\n' var");
