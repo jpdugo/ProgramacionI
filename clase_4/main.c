@@ -7,14 +7,13 @@
 #define TOPE 10
 
 // function protoypes
-void completar_vector(int vector[], int largo);
+int *completar_vector(int largo);
 void imprimir_vector(int vector[], int largo);
 
 int main()
 {
-
-  int vector[TOPE];
-  completar_vector(vector, TOPE);
+  int *vector = completar_vector(TOPE);
+  printf("Vector sin ordenar: ");
   imprimir_vector(vector, TOPE);
 
   int intervalo = TOPE / 2;
@@ -44,20 +43,25 @@ int main()
 
     intervalo = intervalo / 2;
   }
-
+  
+  printf("Vector ordenado: ");
   imprimir_vector(vector, TOPE);
 
   return 0;
 }
 
-void completar_vector(int vector[], int largo)
+int *completar_vector(int largo)
 {
+  int * vector = (int *)malloc(largo * sizeof(int));
+
   srand(time(NULL));
 
   for (int i = 0; i < largo; i++)
   {
     vector[i] = rand() % 101;
   }
+
+  return vector;
 }
 
 void imprimir_vector(int vector[], int largo)
@@ -69,4 +73,3 @@ void imprimir_vector(int vector[], int largo)
 
   printf("%d\n", vector[largo - 1]);
 }
-
