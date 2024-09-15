@@ -50,6 +50,8 @@ int main()
   printf("Vector ordenado: ");
   imprimir_vector(vector, tope);
 
+  free(vector);
+
   return 0;
 }
 
