@@ -19,7 +19,7 @@ int main()
 
   printf("%d \n", ferror(archivo_enteros));
 
-  printf("Ingrese una secuencia de numeros enteros:\n");
+  printf("Ingrese una secuencia de numeros enteros separados por un espacio:\n");
   fflush(stdin);
   scanf(" %[^\n]", texto);
   fprintf(archivo_enteros, "%s\n", texto);
@@ -34,12 +34,11 @@ int main()
   int i = 0;
   int value;
   archivo_resultados = fopen("resultados.txt", "w+");
-  while (fscanf(archivo_enteros, "%1d", &value) == 1 && i < MAX)
-  {
-    
+  while (fscanf(archivo_enteros, "%d ", &value) == 1 && i < MAX)
+  { 
     if (value % 2 == 0)
     {
-      fprintf(archivo_resultados, "%d", value);
+      fprintf(archivo_resultados, "%d ", value);
       contador_pares++;
     }
     i++;
@@ -47,10 +46,19 @@ int main()
 
   rewind(archivo_resultados);
   
-  char resultados[contador_pares];
-  fgets(resultados, contador_pares + 1, archivo_resultados);
-  
-  printf("Hay %d numeros pares: %s", contador_pares, resultados);
+  int * resultados = (int*) malloc(contador_pares * sizeof(int)); // usar  malloc para esto
+  if (resultados == NULL) {
+    perror("Unable to allocate memory");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("Hay %d numeros pares: ", contador_pares);
+
+  i = 0;
+  while (fscanf(archivo_resultados, "%d", resultados + i) != EOF) {
+    printf("%d ", *(resultados + i));
+    i++;
+  }
 
   fclose(archivo_enteros);
   fclose(archivo_resultados);
