@@ -63,6 +63,8 @@ int main()
   fclose(archivo_enteros);
   fclose(archivo_resultados);
 
+  free(resultados);
+
   printf("\nFin del programa!");
 
   return 0;

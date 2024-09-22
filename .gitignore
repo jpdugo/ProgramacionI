@@ -16,3 +16,5 @@ Archivos/programacion1.txt
 tempCodeRunnerFile.c
 tempCodeRunnerFile
 *.txt
+ejemplo_clase*
+!ejemplo_clase*.c
