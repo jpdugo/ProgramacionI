@@ -1,275 +1,136 @@
-/*
-
-modificar el programa para que:
-
-1) Utilice mem dinamica
-2) pase parametros en las funciones (Arhivos, valores.....)
-3) mejore la estetica
-4) mejore todo lo posible....
-
-
-
-
-*/
-
-
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct datos_coches
+typedef struct
 {
-   char marca[20];
-   char modelo[20];
-   char dominio[10];
-   float precio;
-
+    char marca[50];
+    char modelo[50];
+    char dominio[50];
+    float precio;
 }autos;
 
-void agregar();
-void listar();
-void buscar ();
-void vaciar();
-void salir();
-
+void agregarAutos(autos *aut, FILE *fp);
+void listarAutos(autos *aut, FILE *fp);
+void buscar(autos *aut, FILE *fp);
+void borrar(FILE *fp);
 
 int main()
 {
-    int opcion=0;
-    printf("\n\nMENU DE OPCIONES:");
-    printf("\n*******************\n");
-    printf("\n 1) AGREGAR AUTOS");
-    printf("\n 2) LISTAR AUTOS");
-    printf("\n 3) BUSCAR AUTOS");
-    printf("\n 4) VACIAR ARCHIVO");
-    printf("\n 5) SALIR DEL PROGRAMA");
+    FILE *fp=NULL;
+    int op;
+    autos *puntero = NULL;
 
-    printf("\n\nIngrese la opcion deseada: ");
-    scanf("%d", &opcion);
+    puntero=(autos *) malloc(sizeof(autos));
 
-    switch(opcion)
-    {
-        case 1: agregar();
-                break;
 
-        case 2: listar();
-                break;
 
-        case 3: buscar();
-                break;
-
-        case 4: vaciar();
-                break;
-
-        case 5: salir();
-                break;
-
-        default: printf("\nLa opcion no es valida...");
-
-    }
-    system("pause");
-
+    do{
+        printf("Elegi: \n1) A�adir nuevos autos al final \n2) Listar todos los registros \n3) Buscar x marca o modelo \n4) Vaciar archivo \n5) Salir\n");
+        fflush(stdin);
+        scanf("%d",&op);
+        switch(op)
+        {
+        case 1:
+            system("cls");
+            agregarAutos( puntero, fp);
+            system("cls");
+            break;
+        case 2:
+            listarAutos(puntero, fp);
+            break;
+        case 3:
+            buscar(puntero, fp);
+            break;
+        case 4:
+            borrar(fp);
+            break;
+        case 5:
+            system("cls");
+            printf("chau");
+            break;
+        }
+        //system("cls");
+    }while(op!=5);
     return 0;
 }
 
-void agregar()
-{
-    int i, cant_autos=0;
-    FILE * fp=NULL;
-    char *archivo="autos.bin";
-
-    fp=fopen(archivo, "ab");
-
-        if (fp==NULL)
-        {
-            printf("\nError al abrir el archivo.");
-            exit(1);
-        }
-    else
-    {
-        printf("El archivo se abrio correctamente...\n");
-    }
-
-    printf("\nCUantos autos desea ingresar?: ");
-    scanf("%d", &cant_autos);
-
-    for (i=0; i<cant_autos; i++)
-    {
-        printf("\nIngrese la Marca: ");
-        fflush(stdin);
-        gets(autos.marca);
-
-        printf("\nIngrese el Modelo: ");
-        fflush(stdin);
-        gets(autos.modelo);
-
-        printf("\nIngrese el Dominio: ");
-        fflush(stdin);
-        gets(autos.dominio);
-
-        printf("\nIngrese el Precio: ");
-        scanf("%f", &autos.precio);
-
-        fwrite(&autos, sizeof(autos), 1, fp);
-        fputc('\n', fp);
-
-    }
-
-    fclose(fp);
-    main();
-
-}
-
-void listar()
-{
-    int cant_registros=0, i=0;
-    FILE *fp=NULL;
-    char *archivo="autos.bin";
-
-    fp=fopen(archivo, "rb");
-
-        if (fp==NULL)
-        {
-            printf("\nError al abrir el archivo.");
-            exit(1);
-        }
-    else
-    {
-        printf("El archivo se abrio correctamente...\n");
-    }
-
-    fseek(fp, 0, SEEK_END);
-
-    cant_registros=ftell(fp)/(sizeof(autos)+1);
-
-    printf("\n\nLa cantidad de registros que tiene autos.bin es: %d", cant_registros);
-
-    rewind(fp);
-
-    fread(&autos, sizeof(autos), 1, fp);
-    while(!feof(fp))
-    {
-        i=i+1;
-        printf("\nRegistro Nro: %d", i);
-        printf("\nLa Marca es: ");
-        puts(autos.marca);
-        printf("\nEl modelo es: ");
-        puts(autos.modelo);
-        printf("\nEl Dominio es: ");
-        puts(autos.dominio);
-        printf("\nEl Precio es: %f", autos.precio);
-        printf("\n\n");
-        fgetc(fp);
-
-        fread(&autos, sizeof(autos), 1, fp);
-        system("pause");
-
-    }
-    printf("\n\tLECTURA FINALIZADA...");
-    system("pause");
-    fclose(fp);
-    main();
-
-}
-
-void buscar()
-{
-    char busqueda[50];
-    //char aux;
-    int flag;
-
-    FILE *fp=NULL;
-    char *archivo="autos.bin";
-
-    fp=fopen(archivo, "rb");
-
-        if (fp==NULL)
-        {
-            printf("\nError al abrir el archivo.");
-           exit(1);
-        }
-    else
-    {
-        printf("El archivo se abrio correctamente...\n");
-    }
-
-    printf("\nIngrese marca o modelo a buscar: ");
+void agregarAutos(autos *aut, FILE *fp){
+    fp=fopen("autos.bin","ab");
+    printf("Ingrese marca: ");
     fflush(stdin);
-    gets(busqueda);
-    printf("\n\nVamos a buscar la palabra: %s", busqueda);
+    gets(aut->marca);
 
-    fread(&autos, sizeof(autos), 1, fp);
-    while (!feof(fp))
-    {
-        if (((strstr(autos.marca, busqueda))) || ((strstr(autos.modelo, busqueda))))
-        {
-            flag=1;
-            printf("\nSE HAN ENCONTRADO LOS SIGUIENTES RESULTADOS:\n");
-            printf("\nLa Marca es: ");
-            puts(autos.marca);
+    printf("Ingrese modelo: ");
+    fflush(stdin);
+    gets(aut->modelo);
 
-            printf("\nEl modelo es: ");
-            puts(autos.modelo);
+    printf("Ingrese dominio: ");
+    fflush(stdin);
+    gets(aut->dominio);
 
-            printf("\nEl dominio es: ");
-            puts(autos.dominio);
+    printf("Ingrese precio: ");
+    fflush(stdin);
+    scanf("%f",&aut->precio);
 
-            printf("\nEl precio es: %f", autos.precio);
+    fwrite(aut,sizeof(autos),1,fp);
+    fputc('\n',fp);
+    //free(aut);
+    fclose(fp);
+}
 
-            system("pause");
-
-        }
-        fgetc(fp);
-        fread(&autos, sizeof(autos), 1, fp);
+void listarAutos(autos *aut, FILE *fp){
+    system("cls");
+    fp=fopen("autos.bin","rb");
+    //rewind(fp);
+    fseek(fp,0,SEEK_END);
+    if(fp==NULL){
+        printf("ERROR");
+        return -1;
     }
-
-    if (flag==0)
-    {
-        printf("\n\tNO HAY COINCIDENCIAS EN EL ARCHIVO...\n\n");
+    int cant_registros=0;
+    cant_registros=ftell(fp)/(sizeof(autos)+1);
+    printf("Cantidad de registros: %d",cant_registros);
+    rewind(fp);
+    fread(aut, sizeof(autos),1,fp);
+    //printf("%s",texto);
+    while(!feof(fp)){
+        printf("\nMarca: %s - Modelo: %s - Dominio: %s - Precio: %f",aut->marca, aut->modelo, aut->dominio, aut->precio);
+        fgetc(fp);
+        fread(aut, sizeof(autos),1,fp);
     }
     fclose(fp);
-    main();
-}
-
-
-void vaciar()
-{
-    int a;
-    FILE * fp=NULL;
-    char *archivo="autos.bin";
-
-    fp=fopen(archivo, "w+");
-
-        if (fp==NULL)
-        {
-            printf("\nError al abrir el archivo.");
-            exit(1);
-        }
-    else
-    {
-        printf("El archivo se abrio correctamente...\n");
-    }
-
-    a=fflush(fp);
-
-    if (a==0)
-    {
-        system("cls");
-        printf("\nArchivo Vaciado...");
-    }
-    else
-    {
-         printf("\nError al vaciar el archivo...");
-    }
-    main();
-}
-
-void salir()
-{
+    printf("\n");
+    system("pause");
     system("cls");
-    printf("FIN DEL PROGRAMA...");
-    exit(1);
+}
+
+void buscar(autos *aut, FILE *fp){
+    system("cls");
+    fp=fopen("autos.bin","rb");
+    //rewind(fp);
+    char modelo[50];
+    printf("Ingrese modelo a buscar: ");
+    fflush(stdin);
+    gets(modelo);
+    rewind(fp);
+    fread(aut, sizeof(autos),1,fp);
+    //printf("%s",texto);
+    while(!feof(fp)){
+        if(strstr(modelo,aut->modelo)){
+            printf("\nMarca: %s - Modelo: %s - Dominio: %s - Precio: %f",aut->marca, aut->modelo, aut->dominio, aut->precio);
+        }
+        fgetc(fp);
+        fread(aut, sizeof(autos),1,fp);
+    }
+    fclose(fp);
+    printf("\n");
+    system("pause");
+    system("cls");
+}
+
+void borrar(FILE *fp){
+    fp=fopen("autos.bin","w");
+    fclose(fp);
+    system("cls");
 }
