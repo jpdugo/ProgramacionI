@@ -23,6 +23,8 @@ typedef struct
   int edad;
 } Contacto;
 
+
+
 typedef struct
 {
   Contacto *contactos; // Puntero a un array de Contacto
@@ -67,10 +69,17 @@ int main()
   return 0;
 }
 
+void clearBuffer()
+{
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF);
+} 
+
 void ingresar_datos(Agenda *p)
 {
   int pos = p->contador;
   printf("\nIngrese nombre del contacto:");
+  clearBuffer();
   fflush(stdin);
   gets((p->contactos + pos)->nombre);
 

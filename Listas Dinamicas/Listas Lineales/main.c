@@ -19,7 +19,8 @@ void error();
 
 int main()
 {
-
+    
+    return 0;
 }
 
 void error()
