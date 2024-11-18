@@ -151,11 +151,12 @@ int main() {
         system("cls");
 
         switch (opc) {
-        case 1: 
+        case 1: {
             Pedidos p = ingresar_pedido(cola_pedidos, entregados); //Se encolan los pedidos
             encolar(&cola_pedidos, p);
             printf("\nPedido encolado con exito! ");
             break;
+        }
         case 2:
             if (!colaVacia(cola_pedidos)) {
                 strcpy(cola_pedidos.frente->p.estado, "entregado"); //Le cambio el estado al desencolar
